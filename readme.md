@@ -70,7 +70,7 @@ This R/Shiny version has several important differences from the original Python/
 
 ### Data Loading
 
-The app uses functions from the genieBPC package to load clinical, medication, and genomic data. The `pull_data_clinical()`, `pull_data_medications()`, and `pull_data_genomic()` functions are used to fetch the required datasets.
+The app uses functions from the [genieBPC package](https://genie-bpc.github.io/genieBPC/) to load clinical, treatment, and genomic data. The `pull_data_clinical()`, `pull_data_medications()`, and `pull_data_genomic()` functions are used to fetch the required datasets.
 
 ### Propensity Score Calculation
 
