@@ -9,3 +9,6 @@ ehthumbs.db
 
 # Other macOS-specific files
 ._*
+
+# shiny app stuff
+rsconnect/
