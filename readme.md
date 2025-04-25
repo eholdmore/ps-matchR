@@ -5,7 +5,7 @@ This application allows researchers to perform propensity score matching on GENI
 ## 🌐 Live Demo
 
 You can access the deployed Shiny app here:  
-🔗 [ps-matchR on shinyapps.io](https://eholdmore.shinyapps.io/ps-matchR)
+[Propensity Score Matching with GENIE BPC Data](https://eholdmore.shinyapps.io/propensity-score-matcher)
 
 ## Project Structure
 
