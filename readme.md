@@ -35,7 +35,7 @@ This R/Shiny version has several important differences from the original Python/
 
 1. Clone this repository:
    ```
-   git clone https://github.com/yourusername/propensity_score_matcher.git
+   git clone https://github.com/yourusername/ps_matchR.git
    cd propensity_score_matcher
    ```
 
@@ -58,7 +58,7 @@ This R/Shiny version has several important differences from the original Python/
 
 ## Using the Application
 
-1. Select a GENIE BPC consortium and data version
+1. Select a GENIE BPC cohort and data version
 2. Click "Load Data" to retrieve the dataset
 3. Select a treatment agent to define your query cohort
 4. Choose covariates for propensity score calculation
@@ -98,5 +98,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
-- Original Python/Streamlit implementation by [your name]
+- Original [Python/Streamlit implementation](https://github.com/eholdmore/propensity_score_matcher) by eholdmore
 - GENIE BPC data provided by AACR Project GENIE
