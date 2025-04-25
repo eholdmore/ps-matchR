@@ -2,6 +2,11 @@
 
 This application allows researchers to perform propensity score matching on GENIE BPC data to create balanced cohorts for treatment effect analysis.
 
+## 🌐 Live Demo
+
+You can access the deployed Shiny app here:  
+🔗 [ps-matchR on shinyapps.io](https://eholdmore.shinyapps.io/ps-matchR)
+
 ## Project Structure
 
 ```
@@ -74,7 +79,7 @@ The app uses functions from the [genieBPC package](https://genie-bpc.github.io/g
 
 ### Propensity Score Calculation
 
-Propensity scores are calculated using logistic regression via the MatchIt package. The app fits a model predicting treatment assignment based on selected covariates.
+Propensity scores are calculated using logistic regression via the [MatchIt package](https://cran.r-project.org/web/packages/MatchIt/vignettes/MatchIt.html). The app fits a model predicting treatment assignment based on selected covariates.
 
 ### Matching Process
 
