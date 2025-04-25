@@ -1,5 +1,3 @@
-# app.R
-
 # Load required packages
 library(shiny)
 library(shinydashboard)
@@ -17,109 +15,105 @@ library(scales)
 ui <- fluidPage(
   titlePanel("Propensity Score Matching for Treatment Cohorts"),
   
-  # Setup and data loading section
-  sidebarLayout(
-    sidebarPanel(
-      h3("Data Selection"),
-      
-      # GENIE BPC Data Connection
-      selectInput("consortium", 
-                  "Select GENIE BPC Consortium:", 
-                  choices = c("NSCLC", "CRC", "BrCa", "Prostate", "Pancreas")),
-      
-      # Data version selection
-      selectInput("version", 
-                  "Select Data Version:", 
-                  choices = NULL),
-      
-      actionButton("loadData", "Load Data", class = "btn-primary"),
-      hr(),
-      
-      # Only show these options after data is loaded
-      conditionalPanel(
-        condition = "output.dataLoaded",
-        h3("Cohort Selection"),
-        selectInput("treatmentAgent", "Select Treatment Agent:", choices = NULL),
+  tagList(
+    sidebarLayout(
+      sidebarPanel(
+        h3("Data Selection"),
+        selectInput("consortium", 
+                    "Select GENIE BPC Consortium:", 
+                    choices = c("NSCLC", "CRC", "BrCa", "Prostate", "Pancreas")),
+        selectInput("version", 
+                    "Select Data Version:", 
+                    choices = NULL),
+        actionButton("loadData", "Load Data", class = "btn-primary"),
         hr(),
         
-        h3("Propensity Score Settings"),
-        selectInput("numericalCovariates", "Select Numerical Covariates:", 
-                    choices = NULL, multiple = TRUE),
-        selectInput("categoricalCovariates", "Select Categorical Covariates:",
-                    choices = NULL, multiple = TRUE),
-        sliderInput("caliper", "Caliper Width:", min = 0.1, max = 1.0, value = 0.2, step = 0.1),
-        actionButton("runMatching", "Run Propensity Score Matching", class = "btn-success")
-      )
-    ),
-    
-    mainPanel(
-      # Initial data summary
-      conditionalPanel(
-        condition = "output.dataLoaded",
-        h3("Dataset Summary"),
-        fluidRow(
-          column(4, valueBoxOutput("totalPatientsBox", width = NULL)),
-          column(4, valueBoxOutput("totalSamplesBox", width = NULL)),
-          column(4, valueBoxOutput("treatmentAgentsBox", width = NULL))
-        ),
-        
-        # Debug: Check treatment data
-        tabsetPanel(
-          tabPanel("Treatment Data", 
-                  h4("Sample of Treatment Data"),
-                  DTOutput("treatmentDataTable"),
-                  h4("Top Agents in Treatment Data"),
-                  plotlyOutput("topAgentsPlot")
-          ),
+        conditionalPanel(
+          condition = "output.dataLoaded",
+          h3("Cohort Selection"),
+          selectInput("treatmentAgent", "Select Treatment Agent:", choices = NULL),
+          hr(),
           
-          # Results only shown after matching
-          tabPanel("Matching Results",
-                  conditionalPanel(
-                    condition = "output.matchingComplete",
-                    h3("Matching Summary"),
-                    fluidRow(
-                      column(4, valueBoxOutput("originalCohortBox", width = NULL)),
-                      column(4, valueBoxOutput("matchedCohortBox", width = NULL)),
-                      column(4, valueBoxOutput("matchRateBox", width = NULL))
-                    ),
-                    
-                    h3("Propensity Score Distributions"),
-                    plotlyOutput("psDistPlot"),
-                    
-                    h3("Covariate Balance Assessment"),
-                    plotlyOutput("balancePlot"),
-                    h4("Tabular Balance Assessment"),
-                    DTOutput("balanceTable"),
-                    
-                    h3("Cohort Characteristics"),
-                    DTOutput("characteristicsTable"),
-                    
-                    h3("Download Matched Cohorts"),
-                    fluidRow(
-                      column(6, downloadButton("downloadTreated", "Download Query Cohort CSV")),
-                      column(6, downloadButton("downloadControl", "Download Matched Controls CSV"))
-                    )
-                  )
-          )
+          h3("Propensity Score Settings"),
+          selectInput("numericalCovariates", "Select Numerical Covariates:", 
+                      choices = NULL, multiple = TRUE),
+          selectInput("categoricalCovariates", "Select Categorical Covariates:",
+                      choices = NULL, multiple = TRUE),
+          sliderInput("caliper", "Caliper Width:", min = 0.1, max = 1.0, value = 0.2, step = 0.1),
+          actionButton("runMatching", "Run Propensity Score Matching", class = "btn-success")
         )
       ),
       
-      # Show this when data is not yet loaded
-      conditionalPanel(
-        condition = "!output.dataLoaded",
-        h3("Instructions"),
-        p("Welcome to the GENIE BPC Propensity Score Matching application."),
-        p("To begin:"),
-        tags$ol(
-          tags$li("Select a GENIE BPC cohort from the dropdown menu"),
-          tags$li("Select a data version"),
-          tags$li("Click 'Load Data' to retrieve the dataset"),
-          tags$li("You will then be able to select treatment agents and covariates for matching")
+      mainPanel(
+        conditionalPanel(
+          condition = "output.dataLoaded",
+          h3("Dataset Summary"),
+          fluidRow(
+            column(4, valueBoxOutput("totalPatientsBox", width = NULL)),
+            column(4, valueBoxOutput("totalSamplesBox", width = NULL)),
+            column(4, valueBoxOutput("treatmentAgentsBox", width = NULL))
+          ),
+          tabsetPanel(
+            tabPanel("Treatment Data", 
+                     h4("Sample of Treatment Data"),
+                     DTOutput("treatmentDataTable"),
+                     h4("Top Agents in Treatment Data"),
+                     plotlyOutput("topAgentsPlot")
+            ),
+            tabPanel("Matching Results",
+                     conditionalPanel(
+                       condition = "output.matchingComplete",
+                       h3("Matching Summary"),
+                       fluidRow(
+                         column(4, valueBoxOutput("originalCohortBox", width = NULL)),
+                         column(4, valueBoxOutput("matchedCohortBox", width = NULL)),
+                         column(4, valueBoxOutput("matchRateBox", width = NULL))
+                       ),
+                       h3("Propensity Score Distributions"),
+                       plotlyOutput("psDistPlot"),
+                       h3("Covariate Balance Assessment"),
+                       plotlyOutput("balancePlot"),
+                       h4("Tabular Balance Assessment"),
+                       DTOutput("balanceTable"),
+                       h3("Cohort Characteristics"),
+                       DTOutput("characteristicsTable"),
+                       h3("Download Matched Cohorts"),
+                       fluidRow(
+                         column(6, downloadButton("downloadTreated", "Download Query Cohort CSV")),
+                         column(6, downloadButton("downloadControl", "Download Matched Controls CSV"))
+                       )
+                     )
+            )
+          )
+        ),
+        conditionalPanel(
+          condition = "!output.dataLoaded",
+          h3("Instructions"),
+          p("Welcome to the GENIE BPC Propensity Score Matching application."),
+          p("To begin:"),
+          tags$ol(
+            tags$li("Select a GENIE BPC cohort from the dropdown menu"),
+            tags$li("Select a data version"),
+            tags$li("Click 'Load Data' to retrieve the dataset"),
+            tags$li("You will then be able to select treatment agents and covariates for matching")
+          )
         )
       )
+    ),
+    
+    # ✅ GitHub Footer
+    tags$footer(
+      style = "text-align: center; padding: 20px; font-size: 0.9em; color: gray;",
+      "Built with ", tags$a(href = "https://shiny.posit.co", "Shiny", target = "_blank"), 
+      " | View on ", 
+      tags$a(href = "https://github.com/eholdmore/ps-matchR", target = "_blank",
+             tags$img(src = "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                      height = "20px", style = "vertical-align: middle; margin-right: 5px;"),
+             "GitHub")
     )
   )
 )
+
 
 # Server definition
 server <- function(input, output, session) {

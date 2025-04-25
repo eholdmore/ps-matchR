@@ -41,7 +41,7 @@ This R/Shiny version has several important differences from the original Python/
 1. Clone this repository:
    ```
    git clone https://github.com/yourusername/ps_matchR.git
-   cd propensity_score_matcher
+   cd ps_matchR
    ```
 
 2. Install required packages:
